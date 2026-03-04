@@ -336,11 +336,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Push_P1_Pin Push_P2_Pin */
-  GPIO_InitStruct.Pin = Push_P1_Pin|Push_P2_Pin;
+  /*Configure GPIO pin : Push_P1_Pin */
+  GPIO_InitStruct.Pin = Push_P1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(Push_P1_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Push_P2_Pin */
+  GPIO_InitStruct.Pin = Push_P2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(Push_P2_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : Push_Timer_Pin */
   GPIO_InitStruct.Pin = Push_Timer_Pin;
@@ -389,6 +395,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		timer_count = HAL_GetTick();
 		timer_init = 1;
 		timer_disp = 5;
+		Player_1 = 0;
+		Player_2 = 0;
+        HAL_GPIO_WritePin(GPIOA, P1_Led1_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOA, P1_Led2_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOB, P1_Led3_Pin, GPIO_PIN_RESET);
+        HAL_GPIO_WritePin(GPIOB, P1_Led4_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, P2_Led1_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(P2_Led2_GPIO_Port, P2_Led2_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOB, P2_Led3_Pin, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOA, P2_Led4_Pin, GPIO_PIN_RESET);
 
 	}if(Block_Push_Player == 1){
 		if (GPIO_Pin == Push_P1_Pin) {
